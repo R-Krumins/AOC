@@ -27,13 +27,13 @@ echo "Fetched puzzle input"
 cat <<EOF > $filename
 use std::fs;
 
-pub fn part1() {
+pub fn _part1() {
   let file_content = fs::read_to_string("src/inputs/day${day}.txt").unwrap();
   let lines = file_content.split("\n");
  
 }
 
-pub fn part2() {
+pub fn _part2() {
   let file_content = fs::read_to_string("src/inputs/day${day}.txt").unwrap();
   let lines = file_content.split("\n");
 }
