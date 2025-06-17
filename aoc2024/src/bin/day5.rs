@@ -3,8 +3,8 @@ use std::{
     fs,
 };
 
-pub fn _part1() {
-    let file_content = fs::read_to_string("src/inputs/day5.txt").unwrap();
+pub fn part1(input: &str) {
+    let file_content = fs::read_to_string(input).unwrap();
     let (rules, updates) = file_content.split_once("\n\n").unwrap();
 
     //value: number, key: must be before
@@ -16,7 +16,7 @@ pub fn _part1() {
         rule_map.entry(n1).or_insert_with(HashSet::new).insert(n2);
     }
 
-    println!("{:?}", rule_map);
+    //println!("{:?}", rule_map);
 
     let mut result: i32 = 0;
     for update in updates.lines() {
@@ -46,8 +46,8 @@ pub fn _part1() {
     println!("{}", result);
 }
 
-pub fn _part2() {
-    let file_content = fs::read_to_string("src/inputs/day5.txt").unwrap();
+pub fn part2(input: &str) {
+    let file_content = fs::read_to_string(input).unwrap();
     let (rules, updates) = file_content.split_once("\n\n").unwrap();
 
     //value: number, key: must be before
@@ -82,4 +82,18 @@ pub fn _part2() {
     }
 
     println!("{}", result);
+}
+
+fn main() {
+    let input = "src/inputs/day5.txt";
+
+    match std::env::args().nth(1).as_deref() {
+        Some("1") => part1(input),
+        Some("2") => part2(input),
+        Some("12") | Some("21") | None => {
+            part1(input);
+            part2(input);
+        }
+        _ => panic!("Invalid arg. Pass in 1, 2 or leave empty for both."),
+    }
 }

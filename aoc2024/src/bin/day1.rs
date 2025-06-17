@@ -1,7 +1,7 @@
 use std::{collections::HashMap, fs};
 
-pub fn part1() {
-    let file_content = fs::read_to_string("src/inputs/day1.txt").unwrap();
+pub fn part1(input: &str) {
+    let file_content = fs::read_to_string(input).unwrap();
     let lines = file_content.split("\n");
     let mut left: Vec<i32> = Vec::new();
     let mut right: Vec<i32> = Vec::new();
@@ -22,8 +22,8 @@ pub fn part1() {
     println!("{}", result);
 }
 
-pub fn part2() {
-    let file_content = fs::read_to_string("src/inputs/day1.txt").unwrap();
+pub fn part2(input: &str) {
+    let file_content = fs::read_to_string(input).unwrap();
     let lines = file_content.split("\n");
     let mut left: Vec<i32> = Vec::new();
     let mut right: Vec<i32> = Vec::new();
@@ -45,4 +45,18 @@ pub fn part2() {
         .sum();
 
     println!("{}", result);
+}
+
+fn main() {
+    let input = "src/inputs/day1.txt";
+
+    match std::env::args().nth(1).as_deref() {
+        Some("1") => part1(input),
+        Some("2") => part2(input),
+        Some("12") | Some("21") | None => {
+            part1(input);
+            part2(input);
+        }
+        _ => panic!("Invalid arg. Pass in 1, 2 or leave empty for both."),
+    }
 }

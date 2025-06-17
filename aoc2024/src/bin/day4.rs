@@ -1,8 +1,8 @@
 use regex::Regex;
 use std::fs;
 
-pub fn _part1() {
-    let file_content = fs::read_to_string("src/inputs/day4.txt").unwrap();
+pub fn part1(input: &str) {
+    let file_content = fs::read_to_string(input).unwrap();
 
     let lines: Vec<&str> = file_content.lines().collect();
 
@@ -56,8 +56,8 @@ pub fn _part1() {
     println!("{}", result)
 }
 
-pub fn _part2() {
-    let text = fs::read_to_string("src/inputs/day4.txt").unwrap();
+pub fn part2(input: &str) {
+    let text = fs::read_to_string(input).unwrap();
 
     let l: usize = text.lines().next().map(|x| x.len()).unwrap();
     let text = text.replace("\n", "");
@@ -83,4 +83,18 @@ pub fn _part2() {
     }
 
     println!("{}", result);
+}
+
+fn main() {
+    let input = "src/inputs/day4.txt";
+
+    match std::env::args().nth(1).as_deref() {
+        Some("1") => part1(input),
+        Some("2") => part2(input),
+        Some("12") | Some("21") | None => {
+            part1(input);
+            part2(input);
+        }
+        _ => panic!("Invalid arg. Pass in 1, 2 or leave empty for both."),
+    }
 }
