@@ -11,9 +11,9 @@ if [ -z "$1" ]; then
 fi
 
 day=$1
-filename="src/day${day}.rs"
+filename="src/bin/day${day}.rs"
 
-if find "./src/" -maxdepth 1 -type f -name "day${day}.rs" | grep -q .; then
+if find "./src/bin/" -maxdepth 1 -type f -name "day${day}.rs" | grep -q .; then
   echo "Error: ${filename} already exists!"
   exit 1
 fi
@@ -27,21 +27,30 @@ echo "Fetched puzzle input"
 cat <<EOF > $filename
 use std::fs;
 
-pub fn _part1() {
-  let file_content = fs::read_to_string("src/inputs/day${day}.txt").unwrap();
+pub fn part1(input: &str) {
+  let file_content = fs::read_to_string(input).unwrap();
   let lines = file_content.split("\n");
  
 }
 
-pub fn _part2() {
-  let file_content = fs::read_to_string("src/inputs/day${day}.txt").unwrap();
+pub fn part2(input: &str) {
+  let file_content = fs::read_to_string(input).unwrap();
   let lines = file_content.split("\n");
+}
+
+fn main() {
+    let input = "src/inputs/day${day}.txt";
+
+    match std::env::args().nth(1).as_deref() {
+        Some("1") => part1(input),
+        Some("2") => part2(input),
+        Some("12") | Some("21") | None => {
+            part1(input);
+            part2(input);
+        }
+        _ => panic!("Invalid arg. Pass in 1, 2 or leave empty for both."),
+    }
 }
 EOF
 echo "Created ${filename}"
 
-# UDPATE MAIN.RS
-sed -i -E "s/day[0-9]+/day${day}/g" ./src/main.rs
-echo "Updated main.rs"
-
-echo "FINISHED"
