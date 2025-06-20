@@ -26,29 +26,46 @@ echo "Fetched puzzle input"
 # CREATE day.rs FILE
 cat <<EOF > $filename
 use std::fs;
+use std::time::Instant;
 
-pub fn part1(input: &str) {
-  let file_content = fs::read_to_string(input).unwrap();
-  let lines = file_content.split("\n");
- 
+pub fn part1(input: &str) -> u64 {
+    let file_content = fs::read_to_string(input).unwrap();
+    let lines = file_content.split("\n");
+
+    return 0;
 }
 
-pub fn part2(input: &str) {
-  let file_content = fs::read_to_string(input).unwrap();
-  let lines = file_content.split("\n");
+pub fn part2(input: &str) -> u64 {
+    let file_content = fs::read_to_string(input).unwrap();
+    let _lines = file_content.split("\n");
+
+    return 0;
 }
 
 fn main() {
-    let input = "src/inputs/day${day}.txt";
+    let input = "src/inputs/day${DAY}.txt";
 
-    match std::env::args().nth(1).as_deref() {
-        Some("1") => part1(input),
-        Some("2") => part2(input),
-        Some("12") | Some("21") | None => {
-            part1(input);
-            part2(input);
-        }
+    let (do_part1, do_part2) = match std::env::args().nth(1).as_deref() {
+        Some("1") => (true, false),
+        Some("2") => (false, true),
+        Some("12") | Some("21") | None => (true, true),
         _ => panic!("Invalid arg. Pass in 1, 2 or leave empty for both."),
+    };
+
+    if do_part1 {
+        let start = Instant::now();
+        let res = part1(input);
+        let duration = start.elapsed();
+        println!("{res}");
+        println!("in {duration:?}");
+    }
+
+    if do_part2 {
+        let start = Instant::now();
+        let res = part2(input);
+        let duration = start.elapsed();
+        println!("{res}");
+        println!("in {duration:?}");
     }
 }
 EOF
