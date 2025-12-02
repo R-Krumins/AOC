@@ -2,5 +2,7 @@ aoc2024/target/
 .env
 aoc2024/testing/
 
+target/
+
 # ingnore puzzle inputs
 *.txt
