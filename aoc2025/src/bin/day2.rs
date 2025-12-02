@@ -44,9 +44,24 @@ fn part2(input: &str) -> i64 {
 fn main() {
     let input = std::fs::read_to_string("input/day2.txt").unwrap();
 
-    let now = std::time::Instant::now();
-    let res = part2(&input);
-    let time = now.elapsed();
+    let (do_part1, do_part2) = match std::env::args().nth(1).as_deref() {
+        Some("1") => (true, false),
+        Some("2") => (false, true),
+        Some("12") | Some("21") | None => (true, true),
+        Some(_) => panic!("Invalid part arg. Expected 1, 2 or empty for both"),
+    };
 
-    println!("{res}\npart 2 in {time:.2?}");
+    if do_part1 {
+        let now = std::time::Instant::now();
+        let res = part1(&input);
+        let time = now.elapsed();
+        println!("{res}\npart 1 in {time:.2?}");
+    }
+
+    if do_part2 {
+        let now = std::time::Instant::now();
+        let res = part2(&input);
+        let time = now.elapsed();
+        println!("{res}\npart 2 in {time:.2?}");
+    }
 }
