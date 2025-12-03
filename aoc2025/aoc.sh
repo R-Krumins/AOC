@@ -21,7 +21,7 @@ fi
 
 # GET PUZZLE INPUT
 source .env
-curl --cookie "session=${AOC_SESSION_TOKEN}" https://adventofcode.com/${YEAR}/day/${day}/input > "src/inputs/day${day}.txt"
+curl --cookie "session=${AOC_SESSION_TOKEN}" https://adventofcode.com/${YEAR}/day/${day}/input > "input/day${day}.txt"
 echo "Fetched puzzle input"
 
 # CREATE day.rs FILE
@@ -35,7 +35,7 @@ pub fn part2(input: &str) -> u64 {
 }
 
 fn main() {
-    let input = std::fs::read_to_string("input/day2.txt").unwrap();
+    let input = std::fs::read_to_string("input/day${day}.txt").unwrap();
 
     let (do_part1, do_part2) = match std::env::args().nth(1).as_deref() {
         Some("1") => (true, false),
