@@ -1,73 +1,61 @@
-use std::cmp::max;
-use std::ops::RangeInclusive;
-
 pub fn part1(input: &str) -> u64 {
     let (ranges, ingredients) = input.split_once("\n\n").unwrap();
-
-    let ranges: Vec<(usize, usize)> = ranges
+    let mut ranges: Vec<(u64, u64)> = ranges
         .lines()
         .map(|range| {
             let (min, max) = range.split_once("-").unwrap();
-            let min = min.parse::<usize>().unwrap();
-            let max = max.parse::<usize>().unwrap();
-            (min, max)
+            (min.parse().unwrap(), max.parse().unwrap())
         })
         .collect();
-
-    let mut fresh_count = 0;
-    for ingr in ingredients.lines() {
-        let ingr = ingr.parse::<usize>().unwrap();
-
-        for r in &ranges {
-            if ingr >= r.0 && ingr <= r.1 {
-                fresh_count += 1;
-                break;
+    ranges.sort_by_key(|r| r.0);
+    ranges = ranges
+        .into_iter()
+        .fold(Vec::<(u64, u64)>::new(), |mut acc, r| {
+            if let Some(last) = acc.last_mut()
+                && r.0 <= last.1
+            {
+                last.1 = last.1.max(r.1);
+            } else {
+                acc.push(r);
             }
-        }
-    }
-
-    fresh_count
+            acc
+        });
+    ingredients
+        .lines()
+        .filter(|l| {
+            let n: u64 = l.parse().unwrap();
+            ranges.iter().any(|(min, max)| n >= *min && n <= *max)
+        })
+        .count() as u64
 }
 
 pub fn part2(input: &str) -> u64 {
-    #[derive(Clone, Copy, Debug)]
-    struct Range {
-        min: u64,
-        max: u64,
-    }
-
-    let (ranges, _) = input.split_once("\n\n").unwrap();
-
-    let mut ranges: Vec<Range> = ranges
+    let mut ranges: Vec<(u64, u64)> = input
+        .split_once("\n\n")
+        .unwrap()
+        .0
         .lines()
         .map(|range| {
             let (min, max) = range.split_once("-").unwrap();
-            let min = min.parse().unwrap();
-            let max = max.parse().unwrap();
-            Range { min, max }
+            (min.parse().unwrap(), max.parse().unwrap())
         })
         .collect();
-
-    ranges.sort_by_key(|r| r.min);
-
-    let mut merged = vec![ranges[0]];
-
-    for r in ranges.into_iter().skip(1) {
-        let last = merged.last_mut().unwrap();
-
-        if r.min <= last.max {
-            last.max = max(last.max, r.max);
-        } else {
-            merged.push(r);
-        }
-    }
-
-    let mut fresh_count = 0u64;
-    for r in merged {
-        fresh_count += r.max - r.min + 1;
-    }
-
-    fresh_count
+    ranges.sort_by_key(|r| r.0);
+    ranges
+        .into_iter()
+        .fold(Vec::<(u64, u64)>::new(), |mut acc, r| {
+            if let Some(last) = acc.last_mut()
+                && r.0 <= last.1
+            {
+                last.1 = last.1.max(r.1);
+            } else {
+                acc.push(r);
+            }
+            acc
+        })
+        .iter()
+        .map(|(min, max)| max - min + 1)
+        .sum()
 }
 
 fn main() {
