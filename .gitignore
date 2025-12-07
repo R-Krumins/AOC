@@ -6,3 +6,4 @@ target/
 
 # ingnore puzzle inputs
 *.txt
+.idea/
