@@ -53,26 +53,22 @@ pub fn part1(input: &str) -> u64 {
 pub fn part2(input: &str) -> u64 {
     let w = input.find('\n').unwrap() + 1;
     let h = input.lines().count();
-    let mut manifold = input.as_bytes().to_vec();
+    let manifold = input.as_bytes();
     let mut quantum_manifold = vec![0u64; manifold.len()];
 
     // place first beam
     let start = input.find('S').unwrap();
-    manifold[1 * w + start] = BEAM;
     quantum_manifold[1 * w + start] = 1;
 
     for y in 1..h - 1 {
         for x in 0..w - 1 {
             let this_idx = y * w + x;
             let below_idx = this_idx + w;
-            if manifold[this_idx] == BEAM {
+            if quantum_manifold[this_idx] > 0 {
                 if manifold[below_idx] == SPLITTER {
-                    manifold[below_idx + 1] = BEAM;
-                    manifold[below_idx - 1] = BEAM;
                     quantum_manifold[below_idx + 1] += quantum_manifold[this_idx];
                     quantum_manifold[below_idx - 1] += quantum_manifold[this_idx];
                 } else {
-                    manifold[below_idx] = BEAM;
                     quantum_manifold[below_idx] += quantum_manifold[this_idx];
                 }
             }
